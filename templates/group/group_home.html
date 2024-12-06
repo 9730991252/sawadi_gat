@@ -1,0 +1,16 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+{% include 'include/group/group_menu.html' %}
+{% group_information group.id %}
+<div class="container">
+{% loan_demand_list %}
+</div>
+<br>
+{% for m in member %}
+{% member_detail m.id %}
+{% endfor %}
+
+{% endblock content %}

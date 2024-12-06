@@ -1,0 +1,147 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+{% include 'include/member/member_menu.html' %}
+<br><br><br>
+<div>welcome - {{member.name}}</div>
+
+{% group_information member.group_id %}
+
+<style>
+    .member_instalment_box{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    font-weight: 700;
+    border: 1px solid black;
+    .member_instalment_headline{
+        grid-column-start: 1;
+        grid-column-end: 4;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid black;
+        font-size: 18px;
+        color: rgb(0, 0, 0);
+        background-color:antiquewhite;
+    }
+    div{
+        border: 1px solid black;
+        text-align: center;
+        padding: 2px;
+    }
+    .div1{
+        border-top: none;
+        border-left: none;
+    }
+    .div2{
+        border-top: none;
+    }
+    .div3{
+        border: none;
+        border-bottom: 1px solid black;
+    }
+    .end1{
+        border-top: none;
+        border-left: none;
+        border-bottom: none;
+        background-color: rgb(234, 255, 203);
+    }
+    .end2{
+        border-top: none;
+        border-bottom: none;
+        background-color: rgb(234, 255, 203);
+    }
+    .end3{
+        border: none;
+        color: green;
+        background-color: rgb(234, 255, 203);
+    }
+
+    }
+    .flex{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .member_loan{
+        margin-bottom: 10px;
+        text-align: center;
+        width: 100%;
+        height: fit-content;
+        border: 1px solid black;
+    }
+</style>
+<div class="container">
+
+<div class="member_instalment_box">
+<div class="member_instalment_headline">{{member.name}} सभासद हप्ता तपशील </div>
+{% for m in member_installment %}
+<div class="div1">{{forloop.counter}}</div>
+<div class="div2">{{m.date}}</div>
+<div class="div3">{{m.amount}}</div>
+{% endfor %}
+<div class="div1 end1"></div>
+<div class="div2 end2">Total</div>
+<div class="div3 end3">{{total_member_installment}}</div>
+
+</div>
+
+<br>
+
+<div class="text-center">
+    <h5><b>{{member.name}} कर्जाचा  तपशील</b></h5>
+</div>
+
+
+{% for m in member_loan %}
+<br>
+<div class="member_loan">
+    <div class="flex p-2" style="justify-content: space-evenly; font-weight: 700;">
+        <div>कर्ज रक्कम  <b>{{m.loan_amount}}</b></div>
+        <div>{{m.date}}</div>
+        {% if m.loan_status == 0 %}
+            <div style="color: green;">पूर्ण</div>
+        {% else %}
+            <div style="color: red;">कर्ज बाकी {% check_member_loan m.member.id as n %}{{n.amount}}</div>
+        {% endif %}
+    </div>
+    {% loan_installments_details m.id %}
+</div>
+
+
+{% endfor %}
+
+
+{% loan_demand_list %}
+
+</div>
+<!------------------------------------------------------------------------------------->
+<style>
+    .footer{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(197, 197, 197);
+        padding: 5px;
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 10px;
+        input{width: 100%;}
+    }
+</style>
+{% if loan_ststus == 0 %}
+<form method="POST">{% csrf_token %}
+<div class="footer">
+    <div>
+        <input type="number" class="form-control" name="demand_amount" placeholder="कर्ज मागणी रक्कम टाका">
+    </div>
+    <div>
+        <button type="submit" class="btn btn-danger" name="add_demand">मागणी करा</button>
+    </div>
+</div>
+</form>
+<br><br>
+{% endif %}
+{% endblock content %}
