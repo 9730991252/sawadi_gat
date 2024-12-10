@@ -38,11 +38,10 @@
 <br><br>
 <div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
 <script> 
-    // text1 =  (1000 * 30 * 18/100 * 1/365)
+    // text1 =  (100000 * 30 * 18/100 * 1/365)
     // console.log(text1)
-    // text = ((1000 / 100) * 18 / 365) * 30
+    // text = ((100 / 100) * 12 / 365) * 70
     // console.log(text)
-
 
     member_installment_limit = '{{group_name.member_installment_limit}}'
     loan = document.getElementById('loan'+'{{m.id}}').innerText;

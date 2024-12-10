@@ -59,24 +59,23 @@ def check_member_loan(member_id):
     
 @register.simple_tag()
 def loan_interest_days(member_id):
-    today_date = date.today()
-    member_loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()
-    if member_loan:
-        member_loan_interest = Member_loan_installment.objects.filter(loan_id=member_loan.id).last()
-        if member_loan_interest:
-            day = (today_date - member_loan_interest.date)
-        else:
-            day = (today_date - member_loan.date)
-        if day:
-            if day is 0:
-                return 30
-            else:
-                # return day.days
-                return 30
-        else:
-            return 30
-    else:
-        return 30
+    # today_date = date.today()
+    # member_loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()
+    # if member_loan:
+    #     member_loan_interest = Member_loan_installment.objects.filter(loan_id=member_loan.id).last()
+    #     if member_loan_interest:
+    #         day = (today_date - member_loan_interest.date)
+    #     else:
+    #         day = (today_date - member_loan.date)
+    #     if day:
+    #         if day is 0:
+    #             return 0
+    #         else:
+    #             return day.days
+    #     else:
+    #         return 0
+    # else:
+    return 30
     
 @register.inclusion_tag('inclusion_tag/group/loan_demand_list.html')
 def loan_demand_list():
@@ -140,7 +139,7 @@ def member_detail(member_id):
     else:
         loan_interest = (int(loan) / 100) * group.loan_interest
         days = loan_interest_days(member_id)
-        loan_interest = math.floor( (loan_interest * days) / 360) 
+        loan_interest = math.floor( (loan_interest * days) / 365) 
     return{
         'm':Member.objects.filter(id=member_id).first(),
         'member_installment_amount':member_installment_amount,

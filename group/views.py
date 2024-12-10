@@ -74,13 +74,7 @@ def collection(request):
                 if Member_installment.objects.filter(date__icontains=d, member_id=member_id).exists():
                     messages.warning(request,f"Member already Added")   
                 else:
-                    if int(loan_interest) is 0:
-                        Member_installment(
-                            member_id=member_id,
-                            group_id=group.id,
-                            amount=amount,
-                        ).save()
-                    if int(loan_interest) is not 0:
+                    if Member_loan.objects.filter(member_id=member_id,loan_status=0).exists():
                         l = Member_loan.objects.filter(member_id=member_id, loan_status=1).last()
                         Member_installment(
                             member_id=member_id,
@@ -100,6 +94,12 @@ def collection(request):
                         if total_pending_amount == 0:
                             l.loan_status = 0
                             l.save()
+                    else:
+                        Member_installment(
+                            member_id=member_id,
+                            group_id=group.id,
+                            amount=amount,
+                        ).save()
                 time.sleep(1)
                 return redirect('collection')
         else:

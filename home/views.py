@@ -4,7 +4,6 @@ from group.models import *
 from datetime import date
 # Create your views here.
 def index(request):
-
     return render(request, 'home/index.html')
 
 
