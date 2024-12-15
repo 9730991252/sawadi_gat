@@ -1,0 +1,154 @@
+{% extends 'home/base.html' %}
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" integrity="sha512-pdCVFUWsxl1A4g0uV6fyJ3nrnTGeWnZN2Tl/56j45UvZ1OMdm9CIbctuIHj+yBIRTUUyv6I9+OivXj4i0LPEYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+
+
+
+
+
+<style>
+    .name{
+        width: 750px;
+        margin-top: 10px;
+        padding: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        text-align: center;
+        border: 1px solid black;
+    }
+    .group_detail_box{
+        width: 750px;
+        border: 1px solid black;
+        border-top: none;
+        display: grid;
+        grid-template-columns: repeat(6,1fr);
+
+    }
+    .containt{
+            font-weight: 400;
+            }
+    .group_detail_box_headline, .containt{
+            border-right: 1px solid black;
+            text-align: center;
+            font-weight: 550;
+            
+        }
+    
+</style>
+
+<div class="container" style="margin-left: 0px;" id="canvas">
+    <div class="name">{{member.group.group_name}}</div>
+    <div class="group_detail_box">
+        <div class="group_detail_box_headline">सुरुवात दिनांक</div>
+        <div class="group_detail_box_headline">एकूण सभासद</div>
+        <div class="group_detail_box_headline">एकूण सभासद हप्ता जमा</div>
+        <div class="group_detail_box_headline">एकूण व्याज जमा</div>
+        <div class="group_detail_box_headline">एकूण कर्ज येणे बाकी</div>
+        <div class="group_detail_box_headline" style="border: none;">एकूण शिल्लक रक्कम</div>
+        <div class="containt">{{member.group.date}}</div>
+        <div class="containt">{{members.count}}</div>
+        <div class="containt">{{total_member_installment}}</div>
+        <div class="containt">{{total_interest}}</div>
+        <div class="containt">{{total_pending_loan}}</div>
+        <div class="containt" style="border: none;">{% available_amount member.group.id %}</div>
+    </div>
+
+
+
+<style>.member_box{
+    width: 750px;
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+.member_name{
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
+    .member_installment, .member_loan_running{
+        display: grid;
+        grid-template-columns: 0.2fr 1fr 1fr;
+        border: 1px solid black;
+        width: 100%;
+        background-color: black;
+        gap: 1px;
+    }
+    .member_loan_running{
+        grid-template-columns: 0.5fr 1fr 1fr 1fr;
+
+    }
+    .member_installment_headding, .member_loan_running_headding{
+
+        background-color: white;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        
+    }
+    .member_loan_running_headding{
+        grid-column-end: 5;
+
+    }
+    .div{
+        background-color: white;
+    }
+    .flex{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+    </style>
+
+
+<br>
+
+<div class="member_box">
+
+    <div class="member_name">{{member.name}}</div>
+
+    <div class="member_installment">
+        <div class="member_installment_headding" >सभासद हप्ता</div>
+        <div class="div"></div>
+        <div class="div">Date</div>
+        <div class="div">Amount</div>
+        {% member_installment member.id %}
+        <div class="div" style="grid-column-start: 1; grid-column-end: 3;">Total</div>
+        <div class="div"><b>{% member_total_amount member.id 1 %}</b></div>
+    </div>
+
+    {% completed_member_loan member.id %}
+     
+
+        {% pending_member_loan member.id %}
+    
+
+</div>
+
+
+
+</div>
+
+<script>
+window.addEventListener('load', function() {
+    var pdf = document.getElementById("canvas");
+    var opt = {
+        margin: 0.1,
+        filename: 'report.pdf',
+        image: {type: 'jpeg',quality: 98},
+        html2canvas: {scale: 2},
+        jsPDF: {unit: 'in',format: 'a4',orientaion: 'portrait' }
+    };
+    html2pdf().set(opt).from(pdf).save();
+    const myTimeout = setTimeout(replace, 500);
+function replace(){
+    window.location.replace("/member/member_report/");
+}
+})
+</script>
+{% endblock content %}

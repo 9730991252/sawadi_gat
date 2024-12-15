@@ -12,7 +12,7 @@
 <style>
     .member_instalment_box{
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 0.1fr 2fr 1fr;
     font-weight: 700;
     border: 1px solid black;
     .member_instalment_headline{
@@ -78,7 +78,7 @@
 <div class="member_instalment_headline">{{member.name}} सभासद हप्ता तपशील </div>
 {% for m in member_installment %}
 <div class="div1">{{forloop.counter}}</div>
-<div class="div2">{{m.date}}</div>
+<div class="div2">{{m.added_date}}</div>
 <div class="div3">{{m.amount}}</div>
 {% endfor %}
 <div class="div1 end1"></div>
@@ -142,6 +142,10 @@
     </div>
 </div>
 </form>
-<br><br>
 {% endif %}
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
 {% endblock content %}

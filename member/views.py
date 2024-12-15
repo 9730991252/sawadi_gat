@@ -41,3 +41,39 @@ def member_home(request):
         return render(request, 'member/member_home.html', context)
     else:
         return redirect('login')
+    
+def profile(request):
+    if request.session.has_key('member_mobile'):
+        m = request.session['member_mobile']
+        member = Member.objects.filter(mobile=m).first()
+        if member:
+            if 'edit'in request.POST:
+                pin = request.POST.get('pin')
+                member.pin = pin
+                member.save()
+                return redirect('/member/profile/')
+        else:
+            del request.session['member_mobile']
+            return redirect('login')
+        context={
+            'member':member,
+        }
+        return render(request, 'member/profile.html', context)
+    else:
+        return redirect('login')
+    
+def member_report(request):
+    if request.session.has_key('member_mobile'):
+        m = request.session['member_mobile']
+        member = Member.objects.filter(mobile=m).first()
+        if member:
+            pass
+        else:
+            del request.session['member_mobile']
+            return redirect('login')
+        context={
+            'member':member,
+        }
+        return render(request, 'member/member_report.html', context)
+    else:
+        return redirect('login')

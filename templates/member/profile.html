@@ -1,0 +1,44 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+{% include 'include/member/member_menu.html' %}
+<br><br><br>
+<div>welcome - {{member.name}}</div>
+
+<style>
+    .main_box{
+        width: 400px;
+        border: 3px solid  rgb(240, 240, 240);
+        margin: 0 auto;
+        padding: 10px;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 50px;
+        div{
+            width: 100%;
+        }
+    }
+</style>
+<form method="POST">⁡⁢⁣⁢{% csrf_token %}⁡
+<div class="main_box">
+    <div class="text-center">
+        <h5>
+            𝙈͟𝙚͟𝙢͟𝙗͟𝙚͟𝙧 𝘿͟𝙚͟𝙩͟𝙖͟𝙞͟𝙡͟𝙨⁡ 
+        </h5>
+    </div>
+    <div>
+        <lable>Pin</lable>
+        <input type="number" name="pin" value="{{member.pin}}" class="form-control" required>
+    </div>
+    <div>
+        <button name="edit" type="submit" class="form-control border btn btn-primary">Save Canges</button>
+    </div>
+</div>
+</form>
+
+{% endblock content %}
