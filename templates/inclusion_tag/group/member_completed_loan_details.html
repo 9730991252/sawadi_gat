@@ -1,0 +1,9 @@
+{% for m in member_loan_installment %}
+<div class="div">{{forloop.counter}}</div>
+<div class="div">{{m.date|date:"d-m-y"}}</div>
+<div class="div">{{m.installment_amount}}</div>
+<div class="div">{{m.interest_amount}}</div>
+{% endfor %}
+<div class="div" style="grid-column-start: 1;grid-column-end: 3;">Total</div>
+<div class="div">{{installment_amount_total}}</div>
+<div class="div">{{interest_amount_total}}</div>

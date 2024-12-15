@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'sunil',
     'group',
     'ajax',
-    'member'
+    'member',
+    'pdf_convert'
 ]
 
 MIDDLEWARE = [

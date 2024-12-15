@@ -1,0 +1,5 @@
+{% for m in member_installment %}
+<div class="div">{{forloop.counter}}</div>
+<div class="div">{{m.date|date:"d-m-y" }}</div>
+<div class="div">{{m.amount}}</div>
+{% endfor %}

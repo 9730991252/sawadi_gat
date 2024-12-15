@@ -24,5 +24,6 @@ urlpatterns = [
     path('group/', include('group.urls')),
     path('ajax/', include('ajax.urls')),
     path('member/', include('member.urls')),
+    path('pdf/', include('pdf_convert.urls')),
     path("admin/", admin.site.urls),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

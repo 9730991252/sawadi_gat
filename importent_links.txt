@@ -1,0 +1,7 @@
+Django Render HTML to PDF | Introduction
+https://www.youtube.com/watch?v=5umK8mwmpWM
+
+*****************************************************
+
+Django Course Part - 11 || Create Html To PDF With Dynamic Data Using Xhtml2Pdf Package
+https://www.youtube.com/watch?v=AQrsjt4yyrw&t=92s

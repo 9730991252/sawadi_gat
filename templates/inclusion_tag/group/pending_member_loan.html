@@ -1,0 +1,27 @@
+{% load group_tag %}
+{% if loan %}
+<div class="member_loan_running">
+<div class="member_loan_running_headding">
+    <div class="flex p-2" style="justify-content: space-evenly;">
+        <div>कर्ज <b>{{loan.loan_amount }}</b></div>
+        <div>{{loan.date |date:"d-m-y"}}</div>
+        <div style="color: red;">बाकी {% check_member_loan m_id as n %}<b>{{n.amount}}</b></div>
+    </div>
+</div>
+<div class="div"></div>
+<div class="div">Date</div>
+<div class="div">Amount</div>
+<div class="div">Interest</div>
+{% for m in member_loan_installment %}
+<div class="div">{{forloop.counter}}</div>
+<div class="div">{{m.date|date:"d-m-y"}}</div>
+<div class="div">{{m.installment_amount}}</div>
+<div class="div">{{m.interest_amount}}</div>
+{% endfor %}
+<div class="div" style="grid-column-start: 1;grid-column-end: 3;">Total</div>
+<div class="div"><b>{% member_total_amount m_id 2 %}</b></div>
+<div class="div"><b>{% member_total_amount m_id 3 %}</b></div>
+</div>
+{% else %}
+<h5>कोणतेही कर्ज चालू नाही .</h5>
+{% endif %}

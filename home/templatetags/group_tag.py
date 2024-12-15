@@ -5,7 +5,87 @@ import math
 from datetime import date
 from group.models import *
 register = template.Library()
+    
+@register.simple_tag()
+def member_total_amount(member_id, status):
+    total_amount = 0
+    
+    if status == 1:
+        member_installment = Member_installment.objects.filter(member_id=member_id).aggregate(Sum('amount'))
+        member_installment = member_installment['amount__sum']
+        if member_installment is not None :
+            total_amount += int(member_installment)
 
+
+    member_loan_installment=Member_loan_installment.objects.filter(member_id=member_id, loan__loan_status=1)
+    
+    
+    if status == 2:
+        installment_amount = member_loan_installment.aggregate(Sum('installment_amount'))
+        installment_amount = installment_amount['installment_amount__sum'] 
+        print(installment_amount) 
+        if installment_amount is not None :
+            total_amount += int(installment_amount)
+    
+    if status == 3:
+        interest_amount = member_loan_installment.aggregate(Sum('interest_amount'))
+        interest_amount = interest_amount['interest_amount__sum']         
+        if interest_amount is not None :
+            total_amount += int(interest_amount)
+    
+    return total_amount
+
+@register.inclusion_tag('inclusion_tag/group/member_completed_loan_details.html')
+def member_completed_loan_details(l_id):
+    member_loan_installment=Member_loan_installment.objects.filter(loan_id=l_id)
+    
+    installment_amount_total = ''
+    interest_amount_total = ''
+    
+    installment_amount = member_loan_installment.aggregate(Sum('installment_amount'))
+    installment_amount = installment_amount['installment_amount__sum'] 
+    print(installment_amount) 
+    if installment_amount is not None :
+        installment_amount_total = int(installment_amount)
+
+    interest_amount = member_loan_installment.aggregate(Sum('interest_amount'))
+    interest_amount = interest_amount['interest_amount__sum']         
+    if interest_amount is not None :
+        interest_amount_total = int(interest_amount)
+    return{
+        'installment_amount_total':installment_amount_total,
+        'interest_amount_total':interest_amount_total,
+        'member_loan_installment':Member_loan_installment.objects.filter(loan_id=l_id)
+    }
+
+@register.inclusion_tag('inclusion_tag/group/member_installment.html')
+def member_installment(member_id):
+    return {
+            'member_installment':Member_installment.objects.filter(member_id=member_id).order_by('-id'),
+}
+    
+@register.inclusion_tag('inclusion_tag/group/completed_member_loan.html')
+def completed_member_loan(member_id):
+    return {
+        'loans':Member_loan.objects.filter(member_id=member_id, loan_status=0)
+            
+}
+    
+@register.inclusion_tag('inclusion_tag/group/pending_member_loan.html')
+def pending_member_loan(member_id):
+    loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()
+    if loan:
+        member_loan_installment = Member_loan_installment.objects.filter(loan_id=loan.id)
+        return {
+                'm_id':member_id,
+                'loan':loan,
+                'member_loan_installment':member_loan_installment
+        }
+    else:
+        return{
+            'm_id':member_id
+        }
+    
 @register.simple_tag()
 def available_amount(group_id):
     total_available_amount = 0
@@ -47,9 +127,10 @@ def check_collection_status(member_id):
 @register.simple_tag()
 def check_member_loan(member_id):
     member_loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()
+
     if member_loan:
         amount = member_loan.loan_amount
-        g = Member_loan_installment.objects.filter(member_id=member_id).aggregate(Sum('installment_amount'))
+        g = Member_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).aggregate(Sum('installment_amount'))
         installment_amount = g['installment_amount__sum']
         if installment_amount:
             amount -= installment_amount
@@ -82,7 +163,7 @@ def loan_demand_list():
     return{
         'loan_demand':Loan_demand.objects.all().order_by('date')
     }
-    
+     
     
 @register.inclusion_tag('inclusion_tag/group/group_information.html')
 def group_information(group_id):

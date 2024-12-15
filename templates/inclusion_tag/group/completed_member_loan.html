@@ -1,0 +1,29 @@
+{% load group_tag %}
+<style>
+.member_loan_completed{
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 1fr 1fr;
+    border: 1px solid black;
+    width: 100%;
+    background-color: black;
+    gap: 1px;
+}
+.member_loan_completed_headding{
+
+    background-color: white;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    color: green;
+    
+}
+</style>
+{% for l in loans %}
+<div class="member_loan_completed">
+    <div class="member_loan_completed_headding" >कर्ज {{l.loan_amount}} पूर्ण</div>
+    <div class="div"></div>
+    <div class="div">Date</div>
+    <div class="div">Amount</div>
+    <div class="div">Interest</div>
+    {% member_completed_loan_details l.id %}
+</div>
+{% endfor %}

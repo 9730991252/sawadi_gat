@@ -25,6 +25,7 @@ def member_details(request):
         print('hi')
         m = Member.objects.filter(id=id).first()
         group_name = Group.objects.filter(id=m.group.id).first()
+        print(group_name.member_installment_limit)
         context={
             'm':m,
             'group_name':group_name,

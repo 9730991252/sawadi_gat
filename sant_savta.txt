@@ -47,6 +47,11 @@ python3 manage.py migrate
 
 pip install django
 
+*******************************
+
+pip install xhtml2pdf
+
+
 ******** Install Gunicorn ******
  
 pip install gunicorn
