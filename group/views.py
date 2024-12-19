@@ -95,7 +95,7 @@ def loan(request):
             return redirect('login')
         context={
             'group':group,
-            'members':Member.objects.filter(status=1)
+            'members':Member.objects.filter(group_id=group.id, status=1)
         }
         return render(request, 'group/loan.html', context)
     else:
@@ -150,7 +150,7 @@ def collection(request):
             return redirect('login')
         context={
             'group':group,
-            'members':Member.objects.filter(status=1)
+            'members':Member.objects.filter(group_id=group.id,status=1)
         }
         return render(request, 'group/collection.html', context)
     else:
