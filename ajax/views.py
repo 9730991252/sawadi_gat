@@ -22,15 +22,14 @@ def check_backend_mobile(request):
 def member_details(request):
     if request.method == 'GET':
         id = request.GET['id']
-        print('hi')
+
         m = Member.objects.filter(id=id).first()
         group_name = Group.objects.filter(id=m.group.id).first()
-        print(group_name.member_installment_limit)
-        context={
+        context1={
             'm':m,
             'group_name':group_name,
         }
-        t = render_to_string('ajax/office/member_details.html', context)
+        t = render_to_string('ajax/office/member_details.html', context1)
     return JsonResponse({'t': t})
  
 def member_details_loan(request):
@@ -46,3 +45,53 @@ def member_details_loan(request):
         }
         t = render_to_string('ajax/office/member_details_loan.html', context)
     return JsonResponse({'t': t})
+
+def member_details_bank_loan(request):
+    if request.method == 'GET':
+        m = request.session['group_mobile']
+        group = Group.objects.filter(mobile=m).first()
+        c = ''
+        id = request.GET['id']
+        m = Member.objects.filter(id=id).first()
+        print('t')
+        context={
+            'm':m,
+            'group':group,
+        }
+        t = render_to_string('ajax/office/member_details_bank_loan.html', context)
+    return JsonResponse({'t': t})
+
+def member_sangh_loan_details(request):
+    if request.method == 'GET':
+        m = request.session['group_mobile']
+        group = Group.objects.filter(mobile=m).first()
+        c = ''
+        id = request.GET['id']
+        m = Member.objects.filter(id=id).first()
+        print('t')
+        context={
+            'm':m,
+            'group':group,
+        }
+        t = render_to_string('ajax/office/member_sangh_loan_details.html', context)
+    return JsonResponse({'t': t})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

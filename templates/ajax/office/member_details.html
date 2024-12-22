@@ -1,6 +1,8 @@
 <div class="text-center"><strong><h5>{{m.name}}</h5></strong></div> 
 {% load group_tag %}
 {% check_member_loan m.id as check_member_loan %}
+{% check_member_bank_loan m.id as check_member_bank_loan %}
+{% check_member_sangh_loan m.id as check_member_sangh_loan %}
 <form method="POST">
 <input type="hidden" value="{{m.id}}" name="member_id">
 
@@ -18,9 +20,21 @@
 
 <div style="display: flex; gap: 10px;">सभासद हप्ता<input type="text" class="read_only_input" name="loan_installment" id="loan_installment" value="{{group_name.member_installment_limit}}" readonly></div>
 <br>
-<div style="display: flex; gap: 10px;">कर्जाचे व्याज<input type="text" class="read_only_input" name="loan_interest" id="loan_interest{{m.id}}" readonly></div>
+
+
+
+
+<div style="display: flex; gap: 10px;">गट कर्जाचे व्याज<input type="text" class="read_only_input" name="loan_interest" id="loan_interest{{m.id}}" readonly></div>
+<div style="display: flex; gap: 10px;">गट कर्जाची मुद्दल <input type="number"  name="loan_amount" oninput="check_amount()" value="{{check_member_loan.minimum_loan_installment}}" id="loan_amount{{m.id}}" required></div>
 <br>
-<div style="display: flex; gap: 10px;">कर्जाची मुद्दल <input type="number"  name="loan_amount" oninput="check_amount()" value="{{check_member_loan.minimum_loan_installment}}" id="loan_amount{{m.id}}" required></div>
+
+<div style="display: flex; gap: 10px;">बँक कर्जाचे व्याज<input type="text" class="read_only_input" name="bank_loan_interest" id="bank_loan_interest{{m.id}}" readonly></div>
+<div style="display: flex; gap: 10px;">बँक कर्जाची मुद्दल <input type="number"  name="bank_loan_amount" oninput="check_amount()" value="{{check_member_bank_loan.minimum_loan_installment}}" id="bank_loan_amount{{m.id}}" required></div>
+<br>
+
+<div style="display: flex; gap: 10px;">संघ कर्जाचे व्याज<input type="text" class="read_only_input" name="sangh_loan_interest" id="sangh_loan_interest{{m.id}}" readonly></div>
+<div style="display: flex; gap: 10px;">संघ कर्जाची मुद्दल <input type="number"  name="sangh_loan_amount" oninput="check_amount()" value="{{check_member_sangh_loan.minimum_loan_installment}}" id="sangh_loan_amount{{m.id}}" required></div>
+<br>
 
 {% if check_member_loan.amount == 0 %}
 <div class="m-3" style="display: flex; gap: 10px;">
@@ -39,7 +53,11 @@
 
 {% loan_interest_days m.id as n %}
 <br><br>
-<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
+<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 '𝙂𝙖𝙩' 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
+
+<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 'Bank' 𝗹𝗼𝗮𝗻 <strong id="bank_loan{{m.id}}">{{check_member_bank_loan.amount}}</strong></div>
+
+<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 'Sangh' 𝗹𝗼𝗮𝗻 <strong id="sangh_loan{{m.id}}">{{check_member_sangh_loan.amount}}</strong></div>
 <script> 
     // text1 =  (100000 * 30 * 18/100 * 1/365)
     // console.log(text1)
@@ -47,13 +65,22 @@
     // console.log(text)
 
     member_installment_limit = '{{group_name.member_installment_limit}}'
+
     loan = document.getElementById('loan'+'{{m.id}}').innerText;
     loan_interest = (loan / 100) * Number('{{group_name.loan_interest}}') / 365
     loan_interest = loan_interest * '{{n}}'
     document.getElementById('loan_interest'+'{{m.id}}').value = Math.floor(loan_interest)
         
-    total_giving_amount = (Number(member_installment_limit) + Number(loan_interest))
-    final_total_giving_amount = (Number(member_installment_limit) + Number(loan_interest) + Number('{{check_member_loan.amount}}'))
+
+    loan_bank = document.getElementById('bank_loan'+'{{m.id}}').innerText;
+    loan_bank_interest = (Number('{{check_member_bank_loan.amount}}') / 100) * Number('{{group_name.loan_bank_interest}}') / 365
+    loan_bank_interest = Math.floor(loan_bank_interest * '{{n}}')
+    document.getElementById('bank_loan_interest'+'{{m.id}}').value = loan_bank_interest
+    
+    loan_sangh = document.getElementById('sangh_loan'+'{{m.id}}').innerText;
+    loan_sangh_interest = (Number('{{check_member_sangh_loan.amount}}') / 100) * Number('{{group_name.loan_sangh_interest}}') / 365
+    loan_sangh_interest = Math.floor(loan_sangh_interest * '{{n}}')
+    document.getElementById('sangh_loan_interest'+'{{m.id}}').value = loan_sangh_interest
 
     check_amount()
     function check_amount(){
@@ -67,8 +94,40 @@
         }
         if (Number(amount) < Number('{{check_member_loan.amount}}')){
         }
+        
+        bank_amount = document.getElementById('bank_loan_amount{{m.id}}').value;
+        if (Number(bank_amount) > 0){}
+        if (Number(bank_amount) < 0){
+            bank_amount = document.getElementById('bank_amount{{m.id}}').value = 0;
+        }
+        if (Number(bank_amount) > Number('{{check_member_bank_loan.amount}}')){
+            bank_amount = document.getElementById('bank_loan_amount{{m.id}}').value = 0;
+        }
+        if (Number(bank_amount) < Number('{{check_member_bank_loan.amount}}')){
+        }
 
-        total_amount = (Number(member_installment_limit) + Number(loan_interest) + Number(amount))
+        sangh_amount = document.getElementById('sangh_loan_amount{{m.id}}').value;
+        if (Number(sangh_amount) > 0){}
+        if (Number(sangh_amount) < 0){
+            sangh_amount = document.getElementById('sangh_amount{{m.id}}').value = 0;
+        }
+        if (Number(sangh_amount) > Number('{{check_member_sangh_loan.amount}}')){
+            bank_amount = document.getElementById('sangh_loan_amount{{m.id}}').value = 0;
+        }
+        if (Number(sangh_amount) < Number('{{check_member_sangh_loan.amount}}')){
+        }
+
+
+        total_amount = (Number(bank_amount) 
+        + Number(member_installment_limit) 
+        + Number(loan_interest)
+        + Number(amount) 
+        + Number(loan_bank_interest)
+        + Number(sangh_amount)
+        + Number(loan_sangh_interest)
+    )
+
+
         document.getElementById('amount').value = Math.floor(total_amount)
 
     }

@@ -1,0 +1,19 @@
+<style>
+    .but{
+            display: flex;
+            gap: 10px;
+            overflow: scroll;
+            width: 100%;
+        }
+    .loan{
+        color: black;
+        background-color: rgb(250, 192, 0);
+        border: none;
+    }
+</style>
+
+<div class="but">
+    <a  href="/group/group_loan/" class="my-1 {% if request.path == '/group/group_loan/' %}btn btn-warning{% else %}btn btn-primary{% endif %}">Group Loan</a>
+    <a  href="/group/bank_loan/" class="my-1 {% if request.path == '/group/bank_loan/' %}btn btn-warning{% else %}btn btn-primary{% endif %}">Bank Loan</a>
+    <a  href="/group/sangh_loan/" class="my-1 {% if request.path == '/group/sangh_loan/' %}btn btn-warning{% else %}btn btn-primary{% endif %}">Sangh Loan</a>
+</div>

@@ -125,6 +125,35 @@ def check_collection_status(member_id):
         return 'no'
     
 @register.simple_tag()
+def check_member_bank_loan(member_id):
+    member_loan = Member_bank_loan.objects.filter(member_id=member_id, loan_status = 1).first()
+
+    if member_loan:
+        amount = member_loan.loan_amount
+        g = Member_bank_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).aggregate(Sum('installment_amount'))
+        installment_amount = g['installment_amount__sum']
+        if installment_amount:
+            amount -= installment_amount
+        print(installment_amount)
+        return {'amount':amount, 'minimum_loan_installment': member_loan.minimum_loan_installment}
+    else:
+        return {'amount':0, 'minimum_loan_installment': 0}
+    
+@register.simple_tag()
+def check_member_sangh_loan(member_id):
+    member_loan = Member_sangh_loan.objects.filter(member_id=member_id, loan_status = 1).first()
+
+    if member_loan:
+        amount = member_loan.loan_amount
+        g = Member_sangh_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).aggregate(Sum('installment_amount'))
+        installment_amount = g['installment_amount__sum']
+        if installment_amount:
+            amount -= installment_amount
+        return {'amount':amount, 'minimum_loan_installment': member_loan.minimum_loan_installment}
+    else:
+        return {'amount':0, 'minimum_loan_installment': 0}
+    
+@register.simple_tag()
 def check_member_loan(member_id):
     member_loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()
 
