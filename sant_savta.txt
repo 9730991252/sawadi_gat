@@ -11,6 +11,7 @@ systemctl daemon-reload
 systemctl restart sawadi_gat.com.gunicorn
 exit
 
+root
 cd sawadi_gat
 git pull
 systemctl daemon-reload

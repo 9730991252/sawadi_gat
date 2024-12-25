@@ -67,18 +67,18 @@
     member_installment_limit = '{{group_name.member_installment_limit}}'
 
     loan = document.getElementById('loan'+'{{m.id}}').innerText;
-    loan_interest = (loan / 100) * Number('{{group_name.loan_interest}}') / 365
+    loan_interest = (loan / 100) * Number('{{group_name.loan_interest}}') / 360
     loan_interest = loan_interest * '{{n}}'
     document.getElementById('loan_interest'+'{{m.id}}').value = Math.floor(loan_interest)
         
 
     loan_bank = document.getElementById('bank_loan'+'{{m.id}}').innerText;
-    loan_bank_interest = (Number('{{check_member_bank_loan.amount}}') / 100) * Number('{{group_name.loan_bank_interest}}') / 365
+    loan_bank_interest = (Number('{{check_member_bank_loan.amount}}') / 100) * Number('{{group_name.loan_bank_interest}}') / 360
     loan_bank_interest = Math.floor(loan_bank_interest * '{{n}}')
     document.getElementById('bank_loan_interest'+'{{m.id}}').value = loan_bank_interest
     
     loan_sangh = document.getElementById('sangh_loan'+'{{m.id}}').innerText;
-    loan_sangh_interest = (Number('{{check_member_sangh_loan.amount}}') / 100) * Number('{{group_name.loan_sangh_interest}}') / 365
+    loan_sangh_interest = (Number('{{check_member_sangh_loan.amount}}') / 100) * Number('{{group_name.loan_sangh_interest}}') / 360
     loan_sangh_interest = Math.floor(loan_sangh_interest * '{{n}}')
     document.getElementById('sangh_loan_interest'+'{{m.id}}').value = loan_sangh_interest
 
