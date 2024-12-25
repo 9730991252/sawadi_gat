@@ -134,9 +134,10 @@
 <script>
 window.addEventListener('load', function() {
     var pdf = document.getElementById("canvas");
+    let file_name = '{{group.group_name}} '+new Date().toLocaleString()+'.pdf'
     var opt = {
         margin: 0.1,
-        filename: 'report.pdf',
+        filename: file_name,
         image: {type: 'jpeg',quality: 98},
         html2canvas: {scale: 2},
         jsPDF: {unit: 'in',format: 'a4',orientaion: 'portrait' }
