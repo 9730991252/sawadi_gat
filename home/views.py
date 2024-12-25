@@ -4,6 +4,7 @@ from group.models import *
 from datetime import date
 # Create your views here.
 def index(request):
+    Member_installment.objects.filter(member_id=4).delete()
     return render(request, 'home/index.html')
 
 

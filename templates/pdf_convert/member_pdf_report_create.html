@@ -144,11 +144,11 @@ window.addEventListener('load', function() {
         html2canvas: {scale: 2},
         jsPDF: {unit: 'in',format: 'a4',orientaion: 'portrait' }
     };
-    html2pdf().set(opt).from(pdf).save();
-    const myTimeout = setTimeout(replace, 500);
-function replace(){
-    window.location.replace("/member/member_report/");
-}
+    html2pdf().set(opt).from(pdf).save().then(pdfResult => {
+
+window.location.replace("/member/member_report/");
+});
+
 })
 </script>
 {% endblock content %}

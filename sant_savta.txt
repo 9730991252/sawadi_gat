@@ -1,6 +1,7 @@
 103.150.136.82
 _______________________________________
 
+root
 cd sawadi_gat
 git pull
 source venv/bin/activate
