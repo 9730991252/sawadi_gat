@@ -13,6 +13,7 @@ class Group(models.Model):
     loan_sangh_interest = models.FloatField(default=0)
     status = models.IntegerField(default=1)
     date = models.DateField(auto_now_add=True,null=True)
+    starting_total_interest_amount = models.FloatField(null=True)
 
 class Member(models.Model):
     group = models.ForeignKey(Group,on_delete=models.PROTECT,null=True)
@@ -82,6 +83,8 @@ class Member_loan_installment(models.Model):
     interest_amount = models.FloatField(null=True)
     date = models.DateField(auto_now_add=True)
     added_date = models.DateTimeField(auto_now_add=True)
+    
+
     
 class Member_bank_loan_installment(models.Model):
     member = models.ForeignKey(Member,on_delete=models.PROTECT,null=True)

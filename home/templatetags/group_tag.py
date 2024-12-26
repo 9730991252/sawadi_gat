@@ -88,7 +88,12 @@ def pending_member_loan(member_id):
     
 @register.simple_tag()
 def available_amount(group_id):
-    total_available_amount = 0
+    group = Group.objects.filter(id=group_id).first()
+    print(group.starting_total_interest_amount)
+    
+    total_available_amount = group.starting_total_interest_amount
+    
+    
     total_installment= Member_installment.objects.filter(group_id=group_id).aggregate(Sum('amount'))
     total_installment = total_installment['amount__sum']
     if total_installment:
@@ -103,12 +108,14 @@ def available_amount(group_id):
         loan_installment = loan_installment['installment_amount__sum']
         if loan_installment:
             total_available_amount += loan_installment
+        
         ############
         loan_interest = Member_loan_installment.objects.filter(group_id=group_id).aggregate(Sum('interest_amount'))
         loan_interest = loan_interest['interest_amount__sum']
         if loan_interest:
             loan_interest += loan_interest
         ############
+        
         if total_available_amount:
             return total_available_amount
         else:
@@ -197,6 +204,7 @@ def loan_demand_list():
 @register.inclusion_tag('inclusion_tag/group/group_information.html')
 def group_information(group_id):
     group = Group.objects.filter(id=group_id).first()
+
     
     total_members = Member.objects.filter(group_id=group_id).count()
     
@@ -207,8 +215,12 @@ def group_information(group_id):
         
     total_interest = Member_loan_installment.objects.filter(group_id=group_id).aggregate(Sum('interest_amount'))
     total_interest = total_interest['interest_amount__sum']
+    
+    
     if total_interest is None:
-        total_interest = 0 
+        total_interest = group.starting_total_interest_amount
+    else:
+        total_interest += group.starting_total_interest_amount
         
     total_pending_loan = Member_loan.objects.filter(group_id=group_id).aggregate(Sum('loan_amount'))
     total_pending_loan = total_pending_loan['loan_amount__sum']

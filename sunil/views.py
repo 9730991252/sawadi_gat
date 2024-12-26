@@ -24,9 +24,7 @@ def sunil_home(request):
             mobile = request.POST.get('mobile')
             pin = request.POST.get('pin')
             address = request.POST.get('address')
-            member_installment_limit = request.POST.get('member_installment_limit')
-            maximum_loan = request.POST.get('maximum_loan')
-            loan_interest = request.POST.get('loan_interest')
+            starting_total_interest_amount = request.POST.get('starting_total_interest_amount')
             if Group.objects.filter(mobile=mobile).exists():
                 pass
             else:
@@ -35,9 +33,7 @@ def sunil_home(request):
                     mobile = mobile,
                     pin = pin,
                     address = address,
-                    member_installment_limit = member_installment_limit,
-                    maximum_loan = maximum_loan,
-                    loan_interest = loan_interest,
+                    starting_total_interest_amount=starting_total_interest_amount,
                 ).save()
             time.sleep(1)
             return redirect('sunil_home')

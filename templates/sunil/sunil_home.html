@@ -38,17 +38,10 @@
               <input type="text" name="address" value="{{group.address}}" class="form-control" required>
           </div>
           <div>
-              <lable>वार्षिक व्याज टक्केवारी</lable>
-              <input type="number" name="loan_interest" step="any"  value="{{group.loan_interest}}" class="form-control" required>
+            <label for="">starting total interest amount</label>
+            <input type="number" placeholder="Starting total interest amount" name="starting_total_interest_amount" class="form-control" required>
           </div>
-          <div>
-              <lable>सभासद हप्ता</lable>
-              <input type="number" name="member_installment_limit"  value="{{group.member_installment_limit}}" class="form-control" required>
-          </div>
-          <div>
-              <lable>जास्तीत जास्त लोन</lable>
-              <input type="number" name="maximum_loan"  value="{{group.maximum_loan}}" class="form-control" required>
-          </div>
+          <br>
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary" name="add_group">Add</button>
             </div>
