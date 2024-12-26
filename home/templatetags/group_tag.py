@@ -88,10 +88,12 @@ def pending_member_loan(member_id):
     
 @register.simple_tag()
 def available_amount(group_id):
-    group = Group.objects.filter(id=group_id).first()
-    print(group.starting_total_interest_amount)
+    total_available_amount = 0
     
-    total_available_amount = group.starting_total_interest_amount
+    group = Group.objects.filter(id=group_id).first()
+    
+    if group.starting_total_interest_amount:
+        total_available_amount = group.starting_total_interest_amount
     
     
     total_installment= Member_installment.objects.filter(group_id=group_id).aggregate(Sum('amount'))
