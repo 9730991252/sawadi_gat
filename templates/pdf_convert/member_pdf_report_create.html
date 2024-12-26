@@ -51,10 +51,10 @@
         <div class="group_detail_box_headline" style="border: none;">एकूण शिल्लक रक्कम</div>
         <div class="containt">{{member.group.date}}</div>
         <div class="containt">{{members.count}}</div>
-        <div class="containt">{{total_member_installment}}</div>
-        <div class="containt">{{total_interest}}</div>
-        <div class="containt">{{total_pending_loan}}</div>
-        <div class="containt" style="border: none;">{% available_amount member.group.id %}</div>
+        <div class="containt text-success">{{total_member_installment}}</div>
+        <div class="containt text-success">{{total_interest}}</div>
+        <div class="containt text-danger">{{total_pending_loan}}</div>
+        <div class="containt text-success" style="border: none;">{% available_amount member.group.id %}</div>
     </div>
 
 

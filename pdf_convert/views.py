@@ -63,6 +63,9 @@ def member_pdf_report_create(request, id):
             total_interest = total_interest['interest_amount__sum']
             if total_interest is None:
                 total_interest = 0 
+            group = Group.objects.filter(id=member.group_id).first()
+            if group.starting_total_interest_amount:
+                total_interest += group.starting_total_interest_amount
             total_pending_loan = Member_loan.objects.filter(group_id=member.group.id).aggregate(Sum('loan_amount'))
             total_pending_loan = total_pending_loan['loan_amount__sum']
             if total_pending_loan is None:
