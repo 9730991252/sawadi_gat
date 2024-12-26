@@ -74,8 +74,50 @@
       <td>{{g.group_name}}</td>
       <td>{{g.mobile}}</td>
       <td>{{g.pin}}</td>
-      <td></td>
+      <td>    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{g.id}}">Edit</button></td>
     </tr>
+    <div class="modal fade" id="exampleModal{{g.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit group</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST">{% csrf_token %}
+              <input type="hidden" name="id" value="{{g.id}}">
+              <div class="mb-3">
+                  <label for="">Name</label>
+                  <input type="text" name="name" value="{{g.group_name}}" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="">Mobile</label>
+                  <input type="number" name="mobile" value="{{g.mobile}}" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="">Pin</label>
+                  <input type="number" name="pin" value="{{g.pin}}" class="form-control" required>
+              </div>
+              <div>
+                <lable>Address</lable>
+                <input type="text" name="address" value="{{g.address}}" value="{{group.address}}" class="form-control" required>
+            </div>
+            <div>
+              <label for="">starting total interest amount</label>
+              <input type="number" placeholder="Starting total interest amount" name="starting_total_interest_amount" value="{{g.starting_total_interest_amount}}" class="form-control" required>
+            </div>
+            <br>
+              <div class="mb-3">
+                  <button type="submit" class="btn btn-primary" name="edit_group">Edit</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endfor %}
   </tbody>
 </table></div>

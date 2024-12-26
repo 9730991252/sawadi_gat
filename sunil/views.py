@@ -37,7 +37,21 @@ def sunil_home(request):
                 ).save()
             time.sleep(1)
             return redirect('sunil_home')
-
+        if 'edit_group'in request.POST:
+            id = request.POST.get('id')
+            group_name = request.POST.get('name')
+            mobile = request.POST.get('mobile')
+            pin = request.POST.get('pin')
+            address = request.POST.get('address')
+            starting_total_interest_amount = request.POST.get('starting_total_interest_amount')
+            g = Group.objects.filter(id=id).first()
+            g.group_name=group_name
+            g.mobile=mobile
+            g.pin=pin
+            g.address=address
+            g.starting_total_interest_amount=starting_total_interest_amount
+            g.save()
+            return redirect('sunil_home')
         context={
             'group':Group.objects.all()
         }
