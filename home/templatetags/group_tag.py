@@ -91,7 +91,6 @@ def available_amount(group_id):
     total_available_amount = 0
     
     group = Group.objects.filter(id=group_id).first()
-    
     if group.starting_total_interest_amount:
         total_available_amount = group.starting_total_interest_amount
     
@@ -101,7 +100,7 @@ def available_amount(group_id):
     if total_installment:
         total_available_amount += total_installment
     if total_available_amount:
-        m = Member_loan.objects.all().aggregate(Sum('loan_amount'))
+        m = Member_loan.objects.filter(group_id=group_id).aggregate(Sum('loan_amount'))
         member_loan_amount = m['loan_amount__sum']
         if member_loan_amount:
             total_available_amount -= member_loan_amount
@@ -115,8 +114,9 @@ def available_amount(group_id):
         loan_interest = Member_loan_installment.objects.filter(group_id=group_id).aggregate(Sum('interest_amount'))
         loan_interest = loan_interest['interest_amount__sum']
         if loan_interest:
-            loan_interest += loan_interest
+            total_available_amount += loan_interest
         ############
+        
         
         if total_available_amount:
             return total_available_amount
