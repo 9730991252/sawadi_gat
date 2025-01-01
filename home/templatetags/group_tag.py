@@ -127,7 +127,11 @@ def available_amount(group_id):
 
 @register.simple_tag()
 def check_collection_status(member_id):
-    d = f'{date.today().year}-{date.today().month}'
+    month = date.today().month
+    if month < 10:
+        d = f'{date.today().year}-0{date.today().month}'
+    else:
+        d = f'{date.today().year}-{date.today().month}'
     if Member_installment.objects.filter(date__icontains=d, member_id=member_id).exists():
         return 'yes' 
     else:

@@ -22,18 +22,16 @@
 <br>
 
 
-
-
-<div style="display: flex; gap: 10px;">गट कर्जाचे व्याज<input type="text" class="read_only_input" name="loan_interest" id="loan_interest{{m.id}}" readonly></div>
-<div style="display: flex; gap: 10px;">गट कर्जाची मुद्दल <input type="number"  name="loan_amount" oninput="check_amount()" value="{{check_member_loan.minimum_loan_installment}}" id="loan_amount{{m.id}}" required></div>
+<div {% if check_member_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>गट कर्जाचे व्याज<input type="text" class="read_only_input" name="loan_interest" id="loan_interest{{m.id}}" readonly></div>
+<div {% if check_member_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>गट कर्जाची मुद्दल <input type="number"  name="loan_amount" oninput="check_amount()" value="{{check_member_loan.minimum_loan_installment}}" id="loan_amount{{m.id}}" required></div>
 <br>
 
-<div style="display: flex; gap: 10px;">बँक कर्जाचे व्याज<input type="text" class="read_only_input" name="bank_loan_interest" id="bank_loan_interest{{m.id}}" readonly></div>
-<div style="display: flex; gap: 10px;">बँक कर्जाची मुद्दल <input type="number"  name="bank_loan_amount" oninput="check_amount()" value="{{check_member_bank_loan.minimum_loan_installment}}" id="bank_loan_amount{{m.id}}" required></div>
+<div {% if check_member_bank_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>बँक कर्जाचे व्याज<input type="text" class="read_only_input" name="bank_loan_interest" id="bank_loan_interest{{m.id}}" readonly></div>
+<div {% if check_member_bank_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>बँक कर्जाची मुद्दल <input type="number"  name="bank_loan_amount" oninput="check_amount()" value="{{check_member_bank_loan.minimum_loan_installment}}" id="bank_loan_amount{{m.id}}" required></div>
 <br>
 
-<div style="display: flex; gap: 10px;">संघ कर्जाचे व्याज<input type="text" class="read_only_input" name="sangh_loan_interest" id="sangh_loan_interest{{m.id}}" readonly></div>
-<div style="display: flex; gap: 10px;">संघ कर्जाची मुद्दल <input type="number"  name="sangh_loan_amount" oninput="check_amount()" value="{{check_member_sangh_loan.minimum_loan_installment}}" id="sangh_loan_amount{{m.id}}" required></div>
+<div {% if check_member_sangh_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>संघ कर्जाचे व्याज<input type="text" class="read_only_input" name="sangh_loan_interest" id="sangh_loan_interest{{m.id}}" readonly></div>
+<div {% if check_member_sangh_loan.amount == 0 %}style="display: none; gap: 10px;"{% else %}style="display: flex; gap: 10px;"{% endif %}>संघ कर्जाची मुद्दल <input type="number"  name="sangh_loan_amount" oninput="check_amount()" value="{{check_member_sangh_loan.minimum_loan_installment}}" id="sangh_loan_amount{{m.id}}" required></div>
 <br>
 
 {% if check_member_loan.amount == 0 %}
