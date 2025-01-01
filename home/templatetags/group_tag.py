@@ -61,7 +61,7 @@ def member_completed_loan_details(l_id):
 @register.inclusion_tag('inclusion_tag/group/member_installment.html')
 def member_installment(member_id):
     return {
-            'member_installment':Member_installment.objects.filter(member_id=member_id).order_by('-id'),
+            'member_installment':Member_installment.objects.filter(member_id=member_id).order_by('id'),
 }
     
 @register.inclusion_tag('inclusion_tag/group/completed_member_loan.html')
