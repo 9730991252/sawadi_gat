@@ -7,6 +7,7 @@ from datetime import date
 from django.db.models import Avg, Sum, Min, Max
 
 # Create your views here.
+
 @csrf_exempt
 def group_loan(request):
     if request.session.has_key('group_mobile'):
@@ -233,12 +234,24 @@ def edit_member_collection(request, member_id):
                 if 'save_member_installment'in request.POST:
                     loan_installment = request.POST.get('loan_installment')
                     Member_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).update(installment_amount=loan_installment)
+                    
+                    amount = member_loan.loan_amount
+                    g = Member_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).aggregate(Sum('installment_amount'))
+                    installment_amount = g['installment_amount__sum']
+                    if installment_amount:
+                        amount -= installment_amount
+                    if amount == 0:
+                        member_loan.loan_status = 0
+                        member_loan.save()
+                    
+                    
                     return redirect('edit_member_collection', member_id=member_id)
                 
                 context = {
                     'group': group,
                     'member': member,
-                    'group_loan_installment':group_loan_installment
+                    'group_loan_installment':group_loan_installment,
+                    'member_loan':member_loan
                 }
                 return render(request, 'group/edit_member_collection.html', context)
             else:

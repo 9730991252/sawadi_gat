@@ -10,6 +10,7 @@
 <div class="text-center"><h5><b>{{member.name}}</b></h5></div>
 
 {% check_member_loan member.id as check_member_loan %}
+{% if member_loan.loan_status == 1 %}
 
 <form method="POST">
 <div style="display: flex; gap: 10px;">गट कर्जाची मुद्दल <input type="number"  name="loan_installment" oninput="check_amount()" value="{{group_loan_installment}}" id="loan_installment" required></div>
@@ -19,7 +20,12 @@
 
 <br>
 
-<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 '𝙂𝙖𝙩' 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
+<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 '𝙂𝙖𝙩' 𝗹𝗼𝗮𝗻 <strong id="loan">{{check_member_loan.amount}}</strong></div>
+{% else %}
+
+<div class="alert alert-success">अभिनंदन <b>'{{member.name}}'</b> नवीन कर्ज  घेऊ शकता </div>
+
+{% endif %}
 
 
 
@@ -31,12 +37,15 @@
 <script>
     function check_amount(){
         loan_installment = document.getElementById('loan_installment').value;
+        loan_amount = (Number('{{check_member_loan.amount}}') + Number('{{group_loan_installment}}'))
         if (Number(loan_installment) < 0){
             loan_installment = document.getElementById('loan_installment').value = 0;
         }
-        if (Number('{{check_member_loan.amount}}') < Number(loan_installment)){
-            loan_installment = document.getElementById('loan_installment').value = '{{check_member_loan.amount}}';
+        if (Number(loan_amount) < Number(loan_installment)){
+            loan_installment = document.getElementById('loan_installment').value = 0;
         }
+
+        document.getElementById('loan').innerText = Number(loan_amount) - Number(loan_installment)
     }
 </script>
 
