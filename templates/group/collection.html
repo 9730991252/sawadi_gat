@@ -22,10 +22,14 @@
     {% include 'include/alert.html' %}
     {% for m in members %}
     {% check_collection_status m.id as n %}
-        <div {% if n == 'yes' %} style="display: none;" {% endif %} class="member_box">
+        {% if n != 'yes' %}
+        {% check_member_group_loan_installment_collection_status m.id as check_member_group_loan_installment_collection_status %}
+        <div class="member_box">
             <div class="text-center" onclick="member_details('{{m.id}}')">{{m.name}} <p>Mobile {{m.mobile}}</p> </div>
             <div id="members_detail{{m.id}}" class="mb-3"></div>
         </div>
+
+        {% endif %}
     {% endfor %}
 </div>
  

@@ -166,6 +166,31 @@ def report(request):
     else:
         return redirect('login')
     
+    
+@csrf_exempt
+def edit_collection(request):
+    if request.session.has_key('group_mobile'):
+        m = request.session['group_mobile']
+        group = Group.objects.filter(mobile=m).first()
+        if group:
+            if 'check_pin'in request.POST:
+                member_id = request.POST.get('member_id')
+                pin = request.POST.get('pin')
+                if int(group.pin) == int(pin):
+                    return redirect(f'/group/edit_member_collection/{member_id}')
+                else:
+                    return redirect('edit_collection')
+        else:
+            del request.session['group_mobile']
+            return redirect('login')
+        context={
+            'group':group,
+            'member':Member.objects.filter(group_id=group.id, status=1)
+        }
+        return render(request, 'group/edit_collection.html', context)
+    else:
+        return redirect('login')
+    
 @csrf_exempt
 def loan(request):
     if request.session.has_key('group_mobile'):
@@ -185,12 +210,61 @@ def loan(request):
         return redirect('login')
     
 @csrf_exempt
+def edit_member_collection(request, member_id):
+    if request.session.has_key('group_mobile'):
+        m = request.session['group_mobile']
+        group = Group.objects.filter(mobile=m).first()
+        if group:
+            member = Member.objects.filter(id=member_id, group_id=group.id).first()
+            if member:
+                m = date.today().month
+                if m < 10:
+                    m = f'0{date.today().month}'
+                d = f'{date.today().year}-{m}'
+                group_loan_installment = ''
+                member_loan = Member_loan.objects.filter(member_id=member_id, loan_status=1).last()
+                if member_loan:
+                    g = Member_loan_installment.objects.filter(date__icontains=d,member_id=member_id, loan_id=member_loan.id).last()
+                    if g == None:
+                        group_loan_installment = 0
+                    else:
+                        group_loan_installment = g.installment_amount
+                    
+                if 'save_member_installment'in request.POST:
+                    loan_installment = request.POST.get('loan_installment')
+                    Member_loan_installment.objects.filter(member_id=member_id, loan_id=member_loan.id).update(installment_amount=loan_installment)
+                    return redirect('edit_member_collection', member_id=member_id)
+                
+                context = {
+                    'group': group,
+                    'member': member,
+                    'group_loan_installment':group_loan_installment
+                }
+                return render(request, 'group/edit_member_collection.html', context)
+            else:
+                messages.error(request, "Member not found")
+                return redirect('collection')
+        else:
+            del request.session['group_mobile']
+            return redirect('login')
+    else:
+        return redirect('login')
+    
+@csrf_exempt
 def collection(request):
     if request.session.has_key('group_mobile'):
         m = request.session['group_mobile']
         group = Group.objects.filter(mobile=m).first()
         if group:
             d = f'{date.today().year}-{date.today().month}'
+            if 'check_pin'in request.POST:
+                member_id = request.POST.get('member_id')
+                pin = request.POST.get('pin')
+                if int(group.pin) == int(pin):
+                    return redirect(f'/group/edit_member_collection/{member_id}')
+                else:
+                    return redirect('collection')
+                
             if 'add_amount'in request.POST:
                 member_id = request.POST.get('member_id')
                 amount = request.POST.get('amount')

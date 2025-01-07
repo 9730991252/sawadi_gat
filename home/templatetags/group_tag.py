@@ -181,6 +181,18 @@ def check_member_loan(member_id):
         return {'amount':0, 'minimum_loan_installment': 0}
     
 @register.simple_tag()
+def check_member_group_loan_installment_collection_status(member_id):
+    m = date.today().month
+    if m < 10:
+        m = f'0{date.today().month}'
+    d = f'{date.today().year}-{m}'
+    member_loan_installment = Member_loan_installment.objects.filter(date__icontains=d, member_id=member_id).first()
+    if member_loan_installment:
+        return member_loan_installment.installment_amount
+    else:
+        return 0
+    
+@register.simple_tag()
 def loan_interest_days(member_id):
     # today_date = date.today()
     # member_loan = Member_loan.objects.filter(member_id=member_id, loan_status = 1).first()

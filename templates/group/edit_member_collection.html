@@ -1,0 +1,43 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+{% include 'include/group/group_menu.html' %}
+
+<div class="container">
+
+<div class="text-center"><h5><b>{{member.name}}</b></h5></div>
+
+{% check_member_loan member.id as check_member_loan %}
+
+<form method="POST">
+<div style="display: flex; gap: 10px;">गट कर्जाची मुद्दल <input type="number"  name="loan_installment" oninput="check_amount()" value="{{group_loan_installment}}" id="loan_installment" required></div>
+<br>
+<button type="submit" class="btn btn-danger" name="save_member_installment">Edit</button>
+</form>
+
+<br>
+
+<div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 '𝙂𝙖𝙩' 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
+
+
+
+
+</div>
+<br>
+
+
+<script>
+    function check_amount(){
+        loan_installment = document.getElementById('loan_installment').value;
+        if (Number(loan_installment) < 0){
+            loan_installment = document.getElementById('loan_installment').value = 0;
+        }
+        if (Number('{{check_member_loan.amount}}') < Number(loan_installment)){
+            loan_installment = document.getElementById('loan_installment').value = '{{check_member_loan.amount}}';
+        }
+    }
+</script>
+
+{% endblock content %}
