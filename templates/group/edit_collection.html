@@ -20,8 +20,10 @@
         {% if n == 'yes' %}
             {% check_member_group_loan_installment_collection_status m.id as check_member_group_loan_installment_collection_status %}
             <div   class="member_box" {% if check_member_group_loan_installment_collection_status == 0 %} style="display: none;"{% endif %} >
-                <div class="text-center">{{m.name}} <p>Mobile {{m.mobile}}</p> <b>Rs.{{check_member_group_loan_installment_collection_status}}</b> </div>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{m.id}}">Edit</button>
+                <div class="text-center">{{m.name}} <p>Mobile {{m.mobile}}</p>  चालू महिन्यात भरलेली कर्जाची मुद्दल <b> Rs.{{check_member_group_loan_installment_collection_status}}</b> </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{m.id}}">Edit</button>
+                </div>
             </div>
             <div class="modal fade" id="exampleModal{{m.id}}"  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

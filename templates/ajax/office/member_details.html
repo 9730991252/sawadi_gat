@@ -52,10 +52,12 @@
 {% loan_interest_days m.id as n %}
 <br><br>
 <div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 '𝙂𝙖𝙩' 𝗹𝗼𝗮𝗻 <strong id="loan{{m.id}}">{{check_member_loan.amount}}</strong></div>
-
+{% if check_member_bank_loan.amount != 0 %}
 <div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 'Bank' 𝗹𝗼𝗮𝗻 <strong id="bank_loan{{m.id}}">{{check_member_bank_loan.amount}}</strong></div>
-
+{% endif %}
+{% if check_member_sangh_loan.amount != 0 %}
 <div class="alert alert-danger">𝗥𝗲𝗺𝗮𝗶𝗻𝗶𝗻𝗴 'Sangh' 𝗹𝗼𝗮𝗻 <strong id="sangh_loan{{m.id}}">{{check_member_sangh_loan.amount}}</strong></div>
+{% endif %}
 <script> 
     // text1 =  (100000 * 30 * 18/100 * 1/365)
     // console.log(text1)
