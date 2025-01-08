@@ -213,9 +213,9 @@ def loan_interest_days(member_id):
     return 30
     
 @register.inclusion_tag('inclusion_tag/group/loan_demand_list.html')
-def loan_demand_list():
+def loan_demand_list(group_id):
     return{
-        'loan_demand':Loan_demand.objects.all().order_by('date')
+        'loan_demand':Loan_demand.objects.filter(group_id=group_id).order_by('date')
     }
      
     

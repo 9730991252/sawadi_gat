@@ -6,7 +6,7 @@
 {% include 'include/group/group_menu.html' %}
 {% group_information group.id %}
 <div class="container">
-{% loan_demand_list %}
+{% loan_demand_list group.id %}
 </div>
 <br>
 {% for m in member %}
