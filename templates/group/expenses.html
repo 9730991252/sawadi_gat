@@ -1,0 +1,82 @@
+{% extends 'home/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+{% load group_tag %}
+{% include 'include/group/group_menu.html' %}
+
+<div class="container">
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    खर्च भरा 
+  </button>
+
+  <br><br>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST">
+                <div class="alert alert-danger">Available Amount Rs.{% available_amount group.id as n %}{{n}}</div>
+              
+          <div class="mb-3">
+            <label for="r">खर्चाचे कारण</label>
+            <input name="remark" type="text" placeholder="खर्चाचे कारण" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="amount">रक्कम</label>
+            <input oninput="check_amount()" type="number" placeholder="रक्कम" name="amount" class="form-control" required>
+          </div>
+        </div>
+        <div class="mb-3 ms-5">
+            <button type="submit" class="btn btn-danger"  name="add_expense">Add</button>
+        </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<style>
+    .expenses_main_box{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 300px);
+        gap: 10px;
+    }
+</style>
+
+
+<div class="expenses_main_box">
+{% for e in expenses %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body text-center">
+      <h5 class="card-title">{{e.remark}}</h5>
+      <p class="card-text">Rs.{{e.amount}}</p>
+      <p class="card-text">{{e.date}}</p>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+</div>
+
+<script>
+function check_amount() {
+  var amount = document.querySelector('input[name="amount"]').value;
+  if (amount < 0) {
+    document.querySelector('input[name="amount"]').value = 0;
+  }
+  var availableAmount = '{{n}}';
+  if (amount > availableAmount) {
+    document.querySelector('input[name="amount"]').value = availableAmount;
+  }
+}
+</script>
+{% endblock content %}

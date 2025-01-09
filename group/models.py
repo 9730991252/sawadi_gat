@@ -110,3 +110,8 @@ class Loan_demand(models.Model):
     demand_amount = models.FloatField(null=True)
     date = models.DateTimeField(auto_now_add=True)
     
+class Expenses(models.Model):
+    group = models.ForeignKey(Group,on_delete=models.PROTECT,null=True)
+    remark = models.CharField(max_length=500)
+    amount = models.FloatField(null=True)
+    date = models.DateTimeField(auto_now_add=True)

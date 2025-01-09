@@ -40,7 +40,8 @@ def pdf_report_create(request):
                 'member':Member.objects.filter(group_id=group.id),
                 'total_member_installment':total_member_installment,
                 'total_interest':total_interest,
-                'total_pending_loan':total_pending_loan
+                'total_pending_loan':total_pending_loan,
+                'expenses': Expenses.objects.filter(group_id=group.id).aggregate(Sum('amount'))['amount__sum'] or 0
             }
             return render(request, 'pdf_convert/report.html', context)
         else:
@@ -79,6 +80,7 @@ def member_pdf_report_create(request, id):
             'total_member_installment':total_member_installment,
             'total_interest':total_interest,
             'total_pending_loan':total_pending_loan,
+            'expenses': Expenses.objects.filter(group_id=group.id).aggregate(Sum('amount'))['amount__sum'] or 0
         }
         return render(request, 'pdf_convert/member_pdf_report_create.html', context)
     else:

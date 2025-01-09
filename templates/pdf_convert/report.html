@@ -25,7 +25,7 @@
         border: 1px solid black;
         border-top: none;
         display: grid;
-        grid-template-columns: repeat(6,1fr);
+        grid-template-columns: repeat(7,1fr);
 
     }
     .containt{
@@ -47,12 +47,14 @@
         <div class="group_detail_box_headline">एकूण सभासद</div>
         <div class="group_detail_box_headline">एकूण सभासद हप्ता जमा</div>
         <div class="group_detail_box_headline">एकूण व्याज जमा</div>
+        <div class="group_detail_box_headline">खर्च</div>
         <div class="group_detail_box_headline">एकूण कर्ज येणे बाकी</div>
         <div class="group_detail_box_headline" style="border: none;">एकूण शिल्लक रक्कम</div>
         <div class="containt">{{group.date}}</div>
         <div class="containt">{{member.count}}</div>
         <div class="containt text-success">{{total_member_installment}}</div>
         <div class="containt text-success">{{total_interest}}</div>
+        <div class="containt text-danger">{{expenses}}</div>
         <div class="containt text-danger">{{total_pending_loan}}</div>
         <div class="containt text-success" style="border: none;">{% available_amount group.id %}</div>
     </div>

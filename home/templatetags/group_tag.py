@@ -94,6 +94,10 @@ def available_amount(group_id):
     if group.starting_total_interest_amount:
         total_available_amount = group.starting_total_interest_amount
     
+    total_expenses = Expenses.objects.filter(group_id=group_id).aggregate(Sum('amount'))
+    total_expenses = total_expenses['amount__sum']
+    if total_expenses:
+        total_available_amount -= total_expenses
     
     total_installment= Member_installment.objects.filter(group_id=group_id).aggregate(Sum('amount'))
     total_installment = total_installment['amount__sum']
@@ -258,7 +262,8 @@ def group_information(group_id):
         'total_member_installment':total_member_installment,
         'total_interest':total_interest,
         'total_pending_loan':total_pending_loan,
-        'member':Member.objects.filter(group_id=group_id).order_by('-id')
+        'member':Member.objects.filter(group_id=group_id).order_by('-id'),
+        'expenses': Expenses.objects.filter(group_id=group_id).aggregate(Sum('amount'))['amount__sum'] or 0,
     }
     
 @register.inclusion_tag('inclusion_tag/group/member_detail.html')

@@ -109,7 +109,31 @@ def sangh_loan(request):
 
 
 
-
+@csrf_exempt
+def expenses(request):
+    if request.session.has_key('group_mobile'):
+        m = request.session['group_mobile']
+        group = Group.objects.filter(mobile=m).first()
+        if group:
+            if 'add_expense' in request.POST:
+                remark = request.POST.get('remark')
+                amount = request.POST.get('amount')
+                Expenses(
+                    group_id=group.id,
+                    remark=remark,
+                    amount=amount,
+                ).save()
+                return redirect('expenses')
+        else:
+            del request.session['group_mobile']
+            return redirect('login')
+        context = {
+            'group': group,
+            'expenses': Expenses.objects.filter(group_id=group.id).order_by('-id')
+        }
+        return render(request, 'group/expenses.html', context)
+    else:
+        return redirect('login')
 
 
 def group_home(request):
